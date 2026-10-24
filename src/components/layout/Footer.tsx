@@ -1,14 +1,15 @@
 import { Link } from 'react-router-dom'
-import { Facebook, Instagram, Linkedin, Mail, MapPin, Phone } from 'lucide-react'
+import { Mail, MapPin, Phone } from 'lucide-react'
 
 import { Logo } from '../brand/Logo'
+import { FacebookIcon, InstagramIcon, LinkedinIcon } from '../brand/SocialIcons'
 import { NewsletterForm } from './NewsletterForm'
 import { brand, contact, navLinks, socials } from '../../data/site'
 
 const socialIcons = {
-  Instagram,
-  LinkedIn: Linkedin,
-  Facebook,
+  Instagram: InstagramIcon,
+  LinkedIn: LinkedinIcon,
+  Facebook: FacebookIcon,
 } as const
 
 export function Footer() {
@@ -93,7 +94,7 @@ export function Footer() {
           <p className="mt-4 text-xs text-white/45">{contact.hours}</p>
         </div>
 
-        <div className="lg:col-span-3">
+        <div className="min-w-0 lg:col-span-3">
           <h2 className="font-display text-[0.7rem] font-semibold uppercase tracking-[0.22em] text-champagne">
             Stay in touch
           </h2>

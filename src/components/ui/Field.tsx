@@ -6,7 +6,7 @@ import { cn } from '../../lib/cn'
 export const controlClass =
   'w-full rounded-xl border border-line bg-white px-4 py-3 text-sm text-ink transition-colors placeholder:text-ink-soft hover:border-navy/25 focus:border-champagne focus:outline-none focus:ring-2 focus:ring-champagne/35 focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-60'
 
-export const selectClass = cn(controlClass, 'appearance-none bg-[length:0.7rem] pr-10')
+export const selectClass = cn(controlClass, 'select-field appearance-none pr-10')
 
 interface FieldProps {
   label: string

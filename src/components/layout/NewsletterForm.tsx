@@ -73,7 +73,7 @@ export function NewsletterForm({ tone = 'dark' }: NewsletterFormProps) {
           aria-invalid={status === 'error'}
           aria-describedby={status === 'error' ? 'newsletter-error' : undefined}
           className={cn(
-            'h-12 flex-1 rounded-full px-5 text-sm transition-colors focus:outline-none focus:ring-2 focus:ring-champagne/40 focus-visible:outline-none',
+            'h-12 min-w-0 flex-1 rounded-full px-5 text-sm transition-colors focus:outline-none focus:ring-2 focus:ring-champagne/40 focus-visible:outline-none',
             tone === 'dark'
               ? 'border border-white/20 bg-white/[0.06] text-white placeholder:text-white/45 hover:border-white/35'
               : 'border border-line bg-white text-ink placeholder:text-ink-soft',
