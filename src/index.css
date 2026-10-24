@@ -1,0 +1,119 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --nav-h: 76px;
+    --ease-premium: cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  html {
+    -webkit-text-size-adjust: 100%;
+    scroll-behavior: smooth;
+    scroll-padding-top: calc(var(--nav-h) + 20px);
+  }
+
+  body {
+    @apply bg-white font-sans text-ink antialiased;
+    overflow-x: hidden;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    @apply font-display text-navy;
+  }
+
+  section[id],
+  footer[id] {
+    scroll-margin-top: calc(var(--nav-h) + 20px);
+  }
+
+  ::selection {
+    background: rgba(197, 160, 112, 0.3);
+  }
+
+  :focus-visible {
+    outline: 2px solid theme('colors.champagne.DEFAULT');
+    outline-offset: 3px;
+  }
+
+  input,
+  select,
+  textarea,
+  button {
+    font: inherit;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.001ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.001ms !important;
+    }
+  }
+}
+
+@layer components {
+  /* Shared page gutter — keeps every section on the same editorial grid. */
+  .shell {
+    @apply mx-auto w-full max-w-[1320px] px-5 sm:px-8 lg:px-10;
+  }
+
+  /* Small letter-spaced label used above every section title. */
+  .eyebrow {
+    @apply font-display text-label uppercase text-champagne;
+  }
+
+  /* Scroll-reveal primitive (driven by the Reveal component's observer). */
+  .reveal {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.85s var(--ease-premium), transform 0.85s var(--ease-premium);
+  }
+
+  .reveal[data-visible='true'] {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .no-scrollbar {
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+
+  /* Understated hover underline for navigation links. */
+  .link-underline {
+    position: relative;
+  }
+
+  .link-underline::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: -5px;
+    height: 1px;
+    background: currentColor;
+    transform: scaleX(0);
+    transform-origin: left center;
+    transition: transform 0.45s var(--ease-premium);
+  }
+
+  .link-underline:hover::after,
+  .link-underline[aria-current='page']::after,
+  .link-underline[data-active='true']::after {
+    transform: scaleX(1);
+  }
+}

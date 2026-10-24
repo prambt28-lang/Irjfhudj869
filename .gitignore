@@ -1,0 +1,23 @@
+# Node / build output
+node_modules/
+dist/
+dist-ssr/
+.vite/
+*.tsbuildinfo
+
+# Logs
+npm-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Editor / OS
+.DS_Store
+.idea/
+.vscode/*
+!.vscode/extensions.json
+
+# Environment files (never commit real credentials).
+# .env.base44-defaults holds non-secret placeholders only and is committed.
+.env
+.env.*
+!.env.base44-defaults
