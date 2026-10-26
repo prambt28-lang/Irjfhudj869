@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom'
 
 import { cn } from '../../lib/cn'
 
-export type ButtonVariant = 'primary' | 'outline' | 'outline-light' | 'light' | 'ghost'
+export type ButtonVariant = 'primary' | 'outline' | 'outline-light' | 'light' | 'champagne' | 'ghost'
 export type ButtonSize = 'sm' | 'md' | 'lg'
 
 interface ButtonBaseProps {
@@ -45,6 +45,9 @@ const variants: Record<ButtonVariant, string> = {
   'outline-light':
     'border border-white/45 text-white shadow-[0_12px_30px_-18px_rgba(0,0,0,0.65)] backdrop-blur-[2px] hover:-translate-y-px hover:border-white hover:bg-white hover:text-navy hover:shadow-lift',
   light: 'bg-white text-navy shadow-depth hover:-translate-y-px hover:shadow-depth-lg',
+  // The site's one gold action, used by the closing 3D gallery.
+  champagne:
+    'bg-champagne text-navy shadow-depth hover:-translate-y-px hover:bg-champagne-light hover:shadow-depth-lg active:shadow-press',
   ghost: 'text-navy hover:text-champagne-dark',
 }
 

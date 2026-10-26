@@ -163,6 +163,43 @@
     }
   }
 
+  /* ---- Closing 3D scene ---------------------------------------------------
+     The gallery floor is one painted plane seen at a shallow angle: a faint blue
+     grid with its far edge lit, receding to the horizon. The mask dissolves the
+     distant rows before they reach it, so the room keeps its depth without a
+     hard edge. Only transform and mask are used — no bitmaps, one layer. */
+  .gallery-floor {
+    pointer-events: none;
+    position: absolute;
+    inset-inline: -32%;
+    bottom: 0;
+    height: 78%;
+    transform: perspective(1100px) rotateX(70deg);
+    transform-origin: bottom center;
+    background-image: linear-gradient(
+        to bottom,
+        rgba(146, 195, 240, 0.22),
+        rgba(146, 195, 240, 0) 26%
+      ),
+      linear-gradient(to right, rgba(122, 172, 226, 0.17) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(122, 172, 226, 0.17) 1px, transparent 1px);
+    background-size: 100% 100%, 72px 72px, 72px 72px;
+    -webkit-mask-image: linear-gradient(
+      to top,
+      rgba(0, 0, 0, 1),
+      rgba(0, 0, 0, 0.55) 46%,
+      transparent 92%
+    );
+    mask-image: linear-gradient(to top, rgba(0, 0, 0, 1), rgba(0, 0, 0, 0.55) 46%, transparent 92%);
+  }
+
+  /* Phones get a tighter grid so the floor still reads as a plane. */
+  @media (max-width: 640px) {
+    .gallery-floor {
+      background-size: 100% 100%, 52px 52px, 52px 52px;
+    }
+  }
+
   /* Native select arrows are switched off for consistent styling — this replaces
      them. The layout is RTL, so the arrow sits on the left, and the control keeps
      `pe-10` (padding-inline-end) to leave it room. */
