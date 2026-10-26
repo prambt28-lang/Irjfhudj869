@@ -10,7 +10,10 @@ interface SectionLabelProps {
   className?: string
 }
 
-/** Small letter-spaced label that opens every section. */
+/**
+ * Small label that opens every section. In the RTL layout the rule sits on the
+ * right of the text, which is where the eye starts.
+ */
 export function SectionLabel({ children, align = 'left', tone = 'default', className }: SectionLabelProps) {
   return (
     <div className={cn('flex items-center gap-3', align === 'center' && 'justify-center', className)}>

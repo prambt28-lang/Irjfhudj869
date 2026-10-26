@@ -10,6 +10,7 @@ import { SectionLabel } from '../components/ui/SectionLabel'
 import { useInquiry } from '../context/InquiryContext'
 import { getAgentById } from '../data/agents'
 import { formatPrice, formatSqft, getPropertyById, getSimilarProperties, locationLabel } from '../data/properties'
+import { faDigits, faInt } from '../lib/format'
 import { useDocumentTitle } from '../hooks/useDocumentTitle'
 
 export default function PropertyDetailPage() {
@@ -17,25 +18,25 @@ export default function PropertyDetailPage() {
   const property = propertyId ? getPropertyById(propertyId) : undefined
   const { openViewing, openContact } = useInquiry()
 
-  useDocumentTitle(property ? property.name : 'Property not found')
+  useDocumentTitle(property ? property.name : 'ملک پیدا نشد')
 
   if (!property) {
     return (
       <section className="bg-ivory pt-[76px]">
         <div className="shell flex min-h-[70vh] flex-col justify-center py-20">
           <div className="max-w-xl">
-            <SectionLabel>Not available</SectionLabel>
-            <h1 className="mt-5 font-display text-display-lg font-bold">This listing is no longer published</h1>
+            <SectionLabel>در دسترس نیست</SectionLabel>
+            <h1 className="mt-5 font-display text-display-lg font-bold">این ملک دیگر منتشر نمی‌شود</h1>
             <p className="mt-6 text-[0.98rem] leading-relaxed text-ink-muted">
-              The property may have completed or been withdrawn. Our current collection is below, and we can
-              share off-market opportunities on request.
+              ممکن است معاملهٔ آن نهایی شده یا از فهرست برداشته شده باشد. مجموعهٔ فعلی ما در پایین است و در صورت
+              درخواست، فرصت‌های خارج از فهرست را هم در اختیارتان می‌گذاریم.
             </p>
             <div className="mt-9 flex flex-wrap gap-3.5">
               <Button to="/properties" variant="primary" size="lg">
-                View all properties
+                مشاهدهٔ همهٔ املاک
               </Button>
               <Button to="/" variant="outline" size="lg">
-                Back to home
+                بازگشت به خانه
               </Button>
             </div>
           </div>
@@ -48,12 +49,12 @@ export default function PropertyDetailPage() {
   const similar = getSimilarProperties(property, 3)
 
   const specs = [
-    { label: 'Bedrooms', value: String(property.beds) },
-    { label: 'Bathrooms', value: String(property.baths) },
-    { label: 'Interior', value: formatSqft(property.sqft) },
-    { label: 'Lot', value: property.lot },
-    { label: 'Year built', value: String(property.year) },
-    { label: 'Type', value: property.type },
+    { label: 'اتاق خواب', value: faInt(property.beds) },
+    { label: 'سرویس بهداشتی', value: faInt(property.baths) },
+    { label: 'زیربنا', value: formatSqft(property.sqft) },
+    { label: 'زمین', value: property.lot },
+    { label: 'سال ساخت', value: faDigits(property.year) },
+    { label: 'نوع ملک', value: property.type },
   ]
 
   return (
@@ -62,19 +63,20 @@ export default function PropertyDetailPage() {
         <div className="shell pt-8 lg:pt-10">
           <Link
             to="/properties"
-            className="inline-flex items-center gap-2 text-xs uppercase tracking-[0.16em] text-ink-muted transition-colors duration-300 hover:text-navy"
+            className="inline-flex items-center gap-2 text-xs text-ink-muted transition-colors duration-300 hover:text-navy"
           >
-            <ArrowLeft className="h-4 w-4" strokeWidth={1.8} aria-hidden="true" />
-            All properties
+            {/* Back points right in RTL. */}
+            <ArrowLeft className="h-4 w-4 rotate-180" strokeWidth={1.8} aria-hidden="true" />
+            همهٔ املاک
           </Link>
 
           <div className="mt-8 grid gap-6 lg:grid-cols-[1.5fr_1fr] lg:items-end">
             <div>
               <div className="flex flex-wrap items-center gap-3">
-                <span className="rounded-full bg-navy px-3.5 py-1.5 font-display text-[0.6rem] font-semibold uppercase tracking-[0.16em] text-champagne-light">
+                <span className="rounded-full bg-navy px-3.5 py-1.5 font-display text-[0.68rem] font-semibold text-champagne-light shadow-depth-sm">
                   {property.status}
                 </span>
-                <span className="text-[0.7rem] uppercase tracking-[0.18em] text-ink-soft">{property.type}</span>
+                <span className="text-[0.78rem] text-ink-soft">{property.type}</span>
               </div>
 
               <h1 className="mt-5 font-display text-display-lg font-bold">{property.name}</h1>
@@ -84,9 +86,9 @@ export default function PropertyDetailPage() {
               </p>
             </div>
 
-            <div className="lg:text-right">
+            <div className="rounded-panel border border-line bg-ivory px-6 py-5 shadow-depth-sm lg:justify-self-end lg:text-end">
               <p className="font-display text-display-md font-bold text-navy">{formatPrice(property.price)}</p>
-              <p className="mt-2 text-[0.68rem] uppercase tracking-[0.18em] text-ink-soft">Guide price</p>
+              <p className="mt-2 text-[0.74rem] text-ink-soft">قیمت راهنما</p>
             </div>
           </div>
         </div>
@@ -99,40 +101,44 @@ export default function PropertyDetailPage() {
       <section className="bg-white pb-20 sm:pb-24">
         <div className="shell grid gap-12 lg:grid-cols-[1.5fr_1fr] lg:gap-16">
           <div>
-            <dl className="grid grid-cols-2 gap-y-8 border-y border-line py-8 sm:grid-cols-3 lg:grid-cols-6">
+            {/* Spec tiles on their own planes — the depth keeps a dense row readable. */}
+            <dl className="grid grid-cols-2 gap-3.5 sm:grid-cols-3 lg:grid-cols-6">
               {specs.map((spec) => (
-                <div key={spec.label}>
-                  <dt className="text-[0.65rem] uppercase tracking-[0.18em] text-ink-soft">{spec.label}</dt>
-                  <dd className="mt-2 font-display text-[1.05rem] font-semibold text-navy">{spec.value}</dd>
+                <div
+                  key={spec.label}
+                  className="rounded-card border border-line bg-ivory px-4 py-4 shadow-depth-sm transition-[transform,box-shadow] duration-500 ease-premium hover:-translate-y-1 hover:shadow-depth"
+                >
+                  <dt className="text-[0.72rem] text-ink-soft">{spec.label}</dt>
+                  <dd className="mt-1.5 font-display text-[1rem] font-semibold text-navy">{spec.value}</dd>
                 </div>
               ))}
             </dl>
 
-            <p className="mt-8 text-[1.02rem] leading-relaxed text-ink">{property.summary}</p>
+            <p className="mt-8 text-[1.04rem] leading-relaxed text-ink">{property.summary}</p>
 
-            <h2 className="mt-12 font-display text-display-sm font-semibold">About this property</h2>
+            <h2 className="mt-12 font-display text-display-sm font-semibold">دربارهٔ این ملک</h2>
             {property.description.map((paragraph) => (
-              <p key={paragraph.slice(0, 32)} className="mt-5 text-[0.96rem] leading-relaxed text-ink-muted">
+              <p key={paragraph.slice(0, 32)} className="mt-5 text-[0.98rem] leading-relaxed text-ink-muted">
                 {paragraph}
               </p>
             ))}
 
-            <h2 className="mt-12 font-display text-display-sm font-semibold">Features</h2>
+            <h2 className="mt-12 font-display text-display-sm font-semibold">ویژگی‌ها</h2>
             <ul className="mt-6 grid gap-4 sm:grid-cols-2">
               {property.features.map((feature) => (
-                <li key={feature} className="flex gap-3 text-[0.92rem] leading-relaxed text-ink-muted">
-                  <Check className="mt-0.5 h-4 w-4 shrink-0 text-champagne-dark" strokeWidth={2} aria-hidden="true" />
+                <li key={feature} className="flex gap-3 text-[0.94rem] leading-relaxed text-ink-muted">
+                  <Check className="mt-1.5 h-4 w-4 shrink-0 text-champagne-dark" strokeWidth={2} aria-hidden="true" />
                   {feature}
                 </li>
               ))}
             </ul>
 
-            <h2 className="mt-12 font-display text-display-sm font-semibold">Amenities</h2>
+            <h2 className="mt-12 font-display text-display-sm font-semibold">امکانات</h2>
             <ul className="mt-6 flex flex-wrap gap-2.5">
               {property.amenities.map((amenity) => (
                 <li
                   key={amenity}
-                  className="rounded-full border border-line bg-ivory px-4 py-2 text-[0.72rem] uppercase tracking-[0.12em] text-ink-muted"
+                  className="rounded-full border border-line bg-ivory px-4 py-2 text-[0.8rem] text-ink-muted shadow-depth-sm transition-transform duration-300 ease-premium hover:-translate-y-0.5"
                 >
                   {amenity}
                 </li>
@@ -141,7 +147,7 @@ export default function PropertyDetailPage() {
           </div>
 
           <aside className="lg:sticky lg:top-[104px] lg:self-start">
-            <div className="rounded-panel border border-line bg-ivory p-7 shadow-soft">
+            <div className="rounded-panel border border-line bg-ivory p-7 shadow-depth-lg">
               <div className="flex items-center gap-4">
                 <img
                   src={agent.photo}
@@ -149,7 +155,7 @@ export default function PropertyDetailPage() {
                   width={112}
                   height={112}
                   loading="lazy"
-                  className="h-14 w-14 rounded-full object-cover"
+                  className="h-14 w-14 rounded-full object-cover shadow-depth-sm"
                 />
                 <div className="min-w-0">
                   <p className="font-display text-sm font-semibold text-navy">{agent.name}</p>
@@ -157,14 +163,14 @@ export default function PropertyDetailPage() {
                 </div>
               </div>
 
-              <p className="mt-5 text-[0.88rem] leading-relaxed text-ink-muted">{agent.focus}</p>
+              <p className="mt-5 text-[0.9rem] leading-relaxed text-ink-muted">{agent.focus}</p>
 
               <div className="mt-6 flex flex-col gap-3">
                 <Button variant="primary" size="md" fullWidth onClick={() => openViewing(property)}>
-                  Schedule a viewing
+                  تعیین زمان بازدید
                 </Button>
                 <Button variant="outline" size="md" fullWidth onClick={() => openContact({ property })}>
-                  Ask a question
+                  پرسش خود را بپرسید
                 </Button>
               </div>
 
@@ -174,25 +180,26 @@ export default function PropertyDetailPage() {
                   className="inline-flex items-center gap-3 text-sm text-ink-muted transition-colors duration-300 hover:text-navy"
                 >
                   <Phone className="h-4 w-4 shrink-0 text-champagne-dark" strokeWidth={1.7} aria-hidden="true" />
-                  {agent.phone}
+                  <span className="ltr-inline">{agent.phone}</span>
                 </a>
                 <a
                   href={`mailto:${agent.email}`}
                   className="inline-flex items-center gap-3 break-all text-sm text-ink-muted transition-colors duration-300 hover:text-navy"
                 >
                   <Mail className="h-4 w-4 shrink-0 text-champagne-dark" strokeWidth={1.7} aria-hidden="true" />
-                  {agent.email}
+                  <span className="ltr-inline">{agent.email}</span>
                 </a>
               </div>
 
               <div className="mt-6 flex items-center justify-between gap-4 border-t border-line pt-5">
-                <span className="text-xs uppercase tracking-[0.14em] text-ink-soft">Save to shortlist</span>
+                <span className="text-xs text-ink-soft">ذخیره در فهرست کوتاه</span>
                 <FavoriteButton property={property} tone="light" />
               </div>
             </div>
 
             <p className="mt-5 text-xs leading-relaxed text-ink-soft">
-              Viewings are accompanied and typically run 45 minutes. Reference {property.id.toUpperCase()}.
+              بازدیدها همراه با مشاور برگزار می‌شود و معمولاً ۴۵ دقیقه طول می‌کشد. کد مرجع:{' '}
+              <span className="ltr-inline">{property.id.toUpperCase()}</span>
             </p>
           </aside>
         </div>
@@ -202,16 +209,16 @@ export default function PropertyDetailPage() {
         <div className="shell">
           <Reveal className="flex flex-wrap items-end justify-between gap-6">
             <div>
-              <SectionLabel>Similar properties</SectionLabel>
-              <h2 className="mt-5 font-display text-display-lg font-bold">You may also like</h2>
+              <SectionLabel>املاک مشابه</SectionLabel>
+              <h2 className="mt-5 font-display text-display-lg font-bold">شاید این‌ها را هم بپسندید</h2>
             </div>
             <Button
               to="/properties"
               variant="outline"
               size="sm"
-              iconRight={<ArrowRight className="h-4 w-4" strokeWidth={1.8} aria-hidden="true" />}
+              iconRight={<ArrowRight className="h-4 w-4 rotate-180" strokeWidth={1.8} aria-hidden="true" />}
             >
-              View all
+              مشاهدهٔ همه
             </Button>
           </Reveal>
 

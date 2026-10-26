@@ -28,19 +28,23 @@ interface ButtonBaseProps {
 export type ButtonProps = ButtonBaseProps
 
 const base =
-  'inline-flex items-center justify-center gap-2.5 rounded-full font-display font-semibold tracking-[0.01em] transition-all duration-300 ease-premium disabled:cursor-not-allowed disabled:opacity-50'
+  'inline-flex items-center justify-center gap-2.5 rounded-full font-display font-semibold transition-all duration-300 ease-premium disabled:cursor-not-allowed disabled:opacity-50 active:translate-y-[1px]'
 
 const sizes: Record<ButtonSize, string> = {
-  sm: 'h-10 px-5 text-[0.76rem]',
-  md: 'h-12 px-7 text-[0.82rem]',
-  lg: 'h-[3.4rem] px-9 text-[0.86rem]',
+  sm: 'h-10 px-5 text-[0.78rem]',
+  md: 'h-12 px-7 text-[0.84rem]',
+  lg: 'h-[3.4rem] px-9 text-[0.88rem]',
 }
 
+/** Depth on every variant: a lit top edge, then a contact + ambient shadow pair. */
 const variants: Record<ButtonVariant, string> = {
-  primary: 'bg-navy text-white shadow-soft hover:bg-navy-800 hover:shadow-lift',
-  outline: 'border border-navy/25 text-navy hover:border-navy hover:bg-navy hover:text-white',
-  'outline-light': 'border border-white/45 text-white hover:border-white hover:bg-white hover:text-navy',
-  light: 'bg-white text-navy shadow-soft hover:bg-white/90',
+  primary:
+    'bg-navy text-white shadow-depth hover:bg-navy-800 hover:shadow-depth-lg active:shadow-press',
+  outline:
+    'border border-navy/25 bg-white text-navy shadow-depth-sm hover:-translate-y-px hover:border-navy hover:bg-navy hover:text-white hover:shadow-depth',
+  'outline-light':
+    'border border-white/45 text-white shadow-[0_12px_30px_-18px_rgba(0,0,0,0.65)] backdrop-blur-[2px] hover:-translate-y-px hover:border-white hover:bg-white hover:text-navy hover:shadow-lift',
+  light: 'bg-white text-navy shadow-depth hover:-translate-y-px hover:shadow-depth-lg',
   ghost: 'text-navy hover:text-champagne-dark',
 }
 

@@ -5,26 +5,26 @@ import { SectionLabel } from '../components/ui/SectionLabel'
 import { useDocumentTitle } from '../hooks/useDocumentTitle'
 
 export default function NotFoundPage() {
-  useDocumentTitle('Page not found')
+  useDocumentTitle('صفحه پیدا نشد')
 
   return (
     <section className="bg-ivory pt-[76px]">
       <div className="shell flex min-h-[75vh] flex-col justify-center py-20">
         <div className="max-w-xl">
-          <SectionLabel>404</SectionLabel>
-          <h1 className="mt-5 font-display text-display-lg font-bold">This page has moved on</h1>
+          <SectionLabel>۴۰۴</SectionLabel>
+          <h1 className="mt-5 font-display text-display-lg font-bold">این صفحه دیگر اینجا نیست</h1>
           <p className="mt-6 text-[0.98rem] leading-relaxed text-ink-muted">
-            The address you followed does not match anything we represent. The collection is always a
-            click away — or call us and we will point you to the right door.
+            نشانی‌ای که باز کرده‌اید با چیزی که ما نمایندگی می‌کنیم هم‌خوان نیست. مجموعهٔ املاک همیشه یک کلیک
+            فاصله دارد — یا تماس بگیرید تا شما را به درست راهنمایی کنیم.
           </p>
           <div className="mt-9 flex flex-wrap gap-3.5">
             <Button
-              to="/properties"
+              to="/search"
               variant="primary"
               size="lg"
               iconLeft={<Search className="h-4 w-4" strokeWidth={1.8} aria-hidden="true" />}
             >
-              Browse properties
+              جست‌وجوی املاک
             </Button>
             <Button
               to="/"
@@ -32,7 +32,7 @@ export default function NotFoundPage() {
               size="lg"
               iconLeft={<Home className="h-4 w-4" strokeWidth={1.8} aria-hidden="true" />}
             >
-              Back to home
+              بازگشت به خانه
             </Button>
           </div>
         </div>

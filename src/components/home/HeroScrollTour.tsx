@@ -1,7 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 
 import { HeroCopy } from './HeroCopy'
-import { HeroSearch } from './HeroSearch'
 import { useMediaQuery } from '../../hooks/useMediaQuery'
 import { useScrollVideoScrub } from '../../hooks/useScrollVideoScrub'
 import { heroVideo } from '../../data/heroVideo'
@@ -15,10 +14,19 @@ import { cn } from '../../lib/cn'
  * and the whole timeline lands exactly on the end of the runway. Scroll progress
  * 0 → the first frame, 1 → the final frame; all the timing work lives in
  * `useScrollVideoScrub`.
+ *
+ * Depth: the clip itself carries the 3D movement, so the layered scrim stays light
+ * and the media plane opens up (scale) as the scrub progresses — the frame widens
+ * like a camera pulling back, and the copy lifts away on a nearer plane.
+ *
+ * The property search that used to sit at the bottom of this section now lives on
+ * its own page (`/search`), reachable from the header and from the hero's first
+ * button, so the hero stays a single, uninterrupted visual.
  */
 export function HeroScrollTour() {
   const runwayRef = useRef<HTMLElement>(null)
   const videoRef = useRef<HTMLVideoElement>(null)
+  const mediaRef = useRef<HTMLDivElement>(null)
   const copyRef = useRef<HTMLDivElement>(null)
   const meterRef = useRef<HTMLDivElement>(null)
   const [showMeter, setShowMeter] = useState(false)
@@ -29,6 +37,7 @@ export function HeroScrollTour() {
   const status = useScrollVideoScrub({
     runwayRef,
     videoRef,
+    mediaRef,
     copyRef,
     meterRef,
     src: source.src,
@@ -57,15 +66,17 @@ export function HeroScrollTour() {
   return (
     <section
       ref={runwayRef}
-      aria-label="Horizon Properties — guided tour"
+      aria-label="Horizon Properties — تور راهنمای ملک"
       className={cn('relative bg-navy-900', failed ? 'min-h-[100svh]' : 'h-[260vh] sm:h-[320vh]')}
     >
       <div className="sticky top-0 h-[100svh] w-full overflow-hidden">
         {/* Poster underneath: the hero never shows a blank rectangle, and it becomes
-            the fallback image if the video cannot be used. */}
+            the fallback image if the video cannot be used. The media plane scales
+            with the scrub, which reads as depth in front of the scrim. */}
         <div
+          ref={mediaRef}
           aria-hidden="true"
-          className="absolute inset-0 z-0 bg-cover bg-center"
+          className="absolute inset-0 z-0 origin-center bg-cover bg-center"
           style={{ backgroundImage: `url(${failed ? heroVideo.fallback : source.poster})` }}
         >
           {!failed && (
@@ -88,33 +99,34 @@ export function HeroScrollTour() {
         </div>
 
         {/* Light scrim only — enough for the copy to stay readable, light enough
-            that the tour itself stays the dominant element. */}
+            that the tour itself stays the dominant element. A bottom shelf adds the
+            depth the removed search card used to give the fold. */}
         <div
           aria-hidden="true"
-          className="absolute inset-0 z-10 bg-gradient-to-b from-navy-900/70 via-navy-900/15 to-navy-900/75"
+          className="absolute inset-0 z-10 bg-gradient-to-b from-navy-900/70 via-navy-900/15 to-navy-900/80"
+        />
+        <div
+          aria-hidden="true"
+          className="absolute inset-x-0 bottom-0 z-10 h-40 bg-gradient-to-t from-navy-900/85 to-transparent"
         />
 
         <div className="relative z-20 flex h-full flex-col justify-end">
-          <div ref={copyRef} className="shell flex flex-1 flex-col justify-end pb-10 pt-32 sm:pt-36">
+          <div ref={copyRef} className="shell flex flex-1 flex-col justify-end pb-16 pt-32 sm:pb-20 sm:pt-36">
             <HeroCopy>
               {status === 'loading' && showMeter && (
-                <div className="mt-6 flex animate-fade-in items-center gap-3" role="status">
+                <div className="mt-7 flex animate-fade-in items-center gap-3" role="status">
                   <span className="relative block h-[2px] w-28 overflow-hidden rounded-full bg-white/20">
                     <span
                       ref={meterRef}
                       className="absolute inset-0 origin-left scale-x-0 rounded-full bg-champagne"
                     />
                   </span>
-                  <span className="font-display text-[0.62rem] uppercase tracking-[0.24em] text-white/55">
-                    Preparing the tour
+                  <span className="font-display text-[0.72rem] font-medium text-white/60">
+                    در حال آماده‌سازی تور
                   </span>
                 </div>
               )}
             </HeroCopy>
-          </div>
-
-          <div className="shell pb-14 lg:pb-20">
-            <HeroSearch />
           </div>
         </div>
       </div>

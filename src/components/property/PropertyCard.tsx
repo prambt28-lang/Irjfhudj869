@@ -2,7 +2,8 @@ import { Link } from 'react-router-dom'
 import { MapPin } from 'lucide-react'
 
 import { FavoriteButton } from './FavoriteButton'
-import { formatPrice, locationLabel, type Property } from '../../data/properties'
+import { TiltCard } from '../ui/TiltCard'
+import { formatMeta, formatPrice, locationLabel, type Property } from '../../data/properties'
 import { cn } from '../../lib/cn'
 
 interface PropertyCardProps {
@@ -13,21 +14,30 @@ interface PropertyCardProps {
 }
 
 const statusTone: Record<Property['status'], string> = {
-  Exclusive: 'bg-champagne text-navy',
-  'New Listing': 'bg-white/92 text-navy',
-  'For Sale': 'bg-navy-900/45 text-white/90',
+  اختصاصی: 'bg-champagne text-navy',
+  'فهرست جدید': 'bg-white/92 text-navy',
+  'برای فروش': 'bg-navy-900/45 text-white/90',
 }
 
+/**
+ * Property card — one raised plane that tips slightly toward the pointer (see
+ * TiltCard). The shortlist button and the status badge ride on the same plane, so
+ * the whole card moves together.
+ */
 export function PropertyCard({ property, priority = false, className }: PropertyCardProps) {
   const image = property.images[0]
-  const showStatus = property.status !== 'For Sale'
+  const showStatus = property.status !== 'برای فروش'
 
   return (
-    <article className={cn('group relative', className)}>
+    <TiltCard
+      as="article"
+      className={cn('relative', className)}
+      cardClassName="overflow-hidden rounded-card shadow-depth transition-shadow duration-500 ease-premium hover:shadow-depth-xl"
+    >
       <Link
         to={`/properties/${property.id}`}
         className="block overflow-hidden rounded-card focus-visible:outline-none"
-        aria-label={`${property.name}, ${locationLabel(property)}, ${formatPrice(property.price)}`}
+        aria-label={`${property.name}، ${locationLabel(property)}، ${formatPrice(property.price)}`}
       >
         <div className="relative aspect-[4/5] overflow-hidden rounded-card bg-navy-900">
           <img
@@ -40,23 +50,23 @@ export function PropertyCard({ property, priority = false, className }: Property
             className="h-full w-full object-cover transition-transform duration-[900ms] ease-premium group-hover:scale-[1.06]"
           />
           <div
-            className="absolute inset-0 bg-gradient-to-t from-navy-900/90 via-navy-900/25 to-transparent"
+            className="absolute inset-0 bg-gradient-to-t from-navy-900/92 via-navy-900/30 to-transparent"
             aria-hidden="true"
           />
 
           <div className="absolute inset-x-0 bottom-0 p-5 sm:p-6">
-            <h3 className="font-display text-[1.05rem] font-semibold leading-snug text-white sm:text-[1.12rem]">
+            <h3 className="font-display text-[1.08rem] font-semibold leading-snug text-white [text-shadow:0_2px_12px_rgba(6,21,48,0.6)] sm:text-[1.15rem]">
               {property.name}
             </h3>
-            <p className="mt-2 flex items-center gap-1.5 text-[0.78rem] text-white/75">
+            <p className="mt-2 flex items-center gap-1.5 text-[0.82rem] text-white/80">
               <MapPin className="h-3.5 w-3.5 shrink-0 text-champagne-light" strokeWidth={1.8} aria-hidden="true" />
               {locationLabel(property)}
             </p>
-            <p className="mt-3 font-display text-[0.95rem] font-semibold text-champagne-light">
+            <p className="mt-3 font-display text-[1rem] font-semibold text-champagne-light">
               {formatPrice(property.price)}
             </p>
-            <p className="mt-1.5 text-[0.7rem] uppercase tracking-[0.14em] text-white/55">
-              {property.type} · {property.beds} bd · {property.baths} ba · {property.sqft.toLocaleString('en-US')} sq ft
+            <p className="mt-1.5 text-[0.76rem] text-white/60">
+              {property.type} · {formatMeta(property)}
             </p>
           </div>
         </div>
@@ -65,7 +75,7 @@ export function PropertyCard({ property, priority = false, className }: Property
       {showStatus && (
         <span
           className={cn(
-            'pointer-events-none absolute left-4 top-4 z-10 rounded-full px-3 py-1.5 font-display text-[0.6rem] font-semibold uppercase tracking-[0.16em] backdrop-blur-[3px]',
+            'pointer-events-none absolute start-4 top-4 z-10 rounded-full px-3 py-1.5 font-display text-[0.68rem] font-semibold shadow-[0_10px_24px_-14px_rgba(0,0,0,0.8)] backdrop-blur-[3px]',
             statusTone[property.status],
           )}
         >
@@ -73,7 +83,7 @@ export function PropertyCard({ property, priority = false, className }: Property
         </span>
       )}
 
-      <FavoriteButton property={property} className="absolute right-4 top-4" />
-    </article>
+      <FavoriteButton property={property} className="absolute end-4 top-4" />
+    </TiltCard>
   )
 }

@@ -22,8 +22,11 @@ import { useEffect, useState, type RefObject } from 'react'
  *   frame (1/30 s) from the last written time, and never while a previous seek is
  *   still in flight. That caps the seek rate well below the frame rate instead of
  *   flooding the decoder with hundreds of requests per second.
- * - All visual updates (video time, copy fade, loading meter) go through refs and
- *   the DOM — the scroll never causes a React re-render.
+ * - All visual updates (video time, media depth, copy fade, loading meter) go
+ *   through refs and the DOM — the scroll never causes a React re-render.
+ *
+ * Depth: the media plane opens from 1.06 to 1 across the scrub and the copy lifts
+ * away on a nearer plane. Both are composited transforms only.
  */
 export type HeroVideoStatus = 'loading' | 'ready' | 'failed'
 
@@ -31,6 +34,8 @@ interface ScrollVideoScrubOptions {
   /** Pinned hero runway — the scroll distance mapped onto the whole video. */
   runwayRef: RefObject<HTMLElement>
   videoRef: RefObject<HTMLVideoElement>
+  /** Media plane that carries the depth scale. */
+  mediaRef?: RefObject<HTMLDivElement>
   /** Hero copy block, faded away as the scrub progresses. */
   copyRef: RefObject<HTMLDivElement>
   /** Loading meter fill; driven with a transform, never with React state. */
@@ -55,10 +60,13 @@ const WARM_TOTAL_TIMEOUT = 6000
 const META_TIMEOUT = 15000
 /** Share of the runway over which the hero copy fades away. */
 const COPY_FADE = 0.34
+/** The media plane's opening scale — the camera-pull-back illusion. */
+const MEDIA_SCALE = 0.06
 
 export function useScrollVideoScrub({
   runwayRef,
   videoRef,
+  mediaRef,
   copyRef,
   meterRef,
   src,
@@ -83,6 +91,7 @@ export function useScrollVideoScrub({
     let written = -1
     let probes = 0
     let fade = -1
+    let mediaScale = -1
     let revealed = false
     let frame = requestAnimationFrame(() => {})
     let probeTimer = 0
@@ -214,6 +223,15 @@ export function useScrollVideoScrub({
         video.currentTime = eased
       }
 
+      const media = mediaRef?.current
+      if (media) {
+        const scale = 1 + MEDIA_SCALE * (1 - target)
+        if (Math.abs(scale - mediaScale) > 0.0008) {
+          mediaScale = scale
+          media.style.transform = `scale(${scale.toFixed(4)})`
+        }
+      }
+
       const copy = copyRef.current
       if (copy) {
         const raw = target >= COPY_FADE ? 1 : target / COPY_FADE
@@ -253,7 +271,7 @@ export function useScrollVideoScrub({
       window.removeEventListener('resize', onResize)
     }
     // `src` restarts the load + warm-up cycle when the breakpoint switches.
-  }, [copyRef, enabled, meterRef, runwayRef, src, videoRef])
+  }, [copyRef, enabled, mediaRef, meterRef, runwayRef, src, videoRef])
 
   return status
 }

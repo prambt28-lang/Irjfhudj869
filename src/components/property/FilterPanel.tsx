@@ -11,6 +11,7 @@ import {
   type PropertyFilters,
 } from '../../data/properties'
 import { activeFilterCount, priceSelectValue } from '../../lib/propertyFilters'
+import { faInt } from '../../lib/format'
 import { cn } from '../../lib/cn'
 
 interface FilterPanelProps {
@@ -21,15 +22,16 @@ interface FilterPanelProps {
   onReset: () => void
 }
 
+/** The refinement rail. A single raised plane that stays with the visitor on desktop. */
 export function FilterPanel({ filters, resultCount, savedCount, onChange, onReset }: FilterPanelProps) {
   const activeCount = activeFilterCount(filters)
 
   return (
-    <div className="rounded-panel border border-line bg-white p-6 shadow-soft lg:sticky lg:top-[104px]">
+    <div className="rounded-panel border border-line bg-white p-6 shadow-depth-lg lg:sticky lg:top-[104px]">
       <div className="flex items-center justify-between gap-4">
-        <h2 className="flex items-center gap-2.5 font-display text-sm font-semibold uppercase tracking-[0.14em] text-navy">
+        <h2 className="flex items-center gap-2.5 font-display text-[0.9rem] font-semibold text-navy">
           <SlidersHorizontal className="h-4 w-4 text-champagne-dark" strokeWidth={1.8} aria-hidden="true" />
-          Refine
+          پالایش نتایج
         </h2>
         {activeCount > 0 && (
           <button
@@ -38,31 +40,31 @@ export function FilterPanel({ filters, resultCount, savedCount, onChange, onRese
             className="inline-flex items-center gap-1.5 text-xs font-medium text-ink-muted transition-colors hover:text-navy"
           >
             <X className="h-3.5 w-3.5" strokeWidth={2} aria-hidden="true" />
-            Clear ({activeCount})
+            پاک کردن ({faInt(activeCount)})
           </button>
         )}
       </div>
 
       <div className="mt-6 flex flex-col gap-5">
-        <Field label="Keyword" id="filter-query">
+        <Field label="کلیدواژه" id="filter-query">
           <div className="relative">
             <Search
-              className="pointer-events-none absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-ink-soft"
+              className="pointer-events-none absolute start-4 top-1/2 h-4 w-4 -translate-y-1/2 text-ink-soft"
               strokeWidth={1.8}
               aria-hidden="true"
             />
             <input
               id="filter-query"
               type="search"
-              placeholder="Name, city or feature"
+              placeholder="نام، شهر یا ویژگی"
               value={filters.query}
               onChange={(event) => onChange({ query: event.target.value })}
-              className={cn(controlClass, 'pl-11')}
+              className={cn(controlClass, 'ps-11')}
             />
           </div>
         </Field>
 
-        <Field label="Location" id="filter-location">
+        <Field label="موقعیت" id="filter-location">
           <select
             id="filter-location"
             className={selectClass}
@@ -77,14 +79,14 @@ export function FilterPanel({ filters, resultCount, savedCount, onChange, onRese
           </select>
         </Field>
 
-        <Field label="Property type" id="filter-type">
+        <Field label="نوع ملک" id="filter-type">
           <select
             id="filter-type"
             className={selectClass}
             value={filters.type}
             onChange={(event) => onChange({ type: event.target.value })}
           >
-            <option value="all">All types</option>
+            <option value="all">همهٔ انواع</option>
             {propertyTypes().map((type) => (
               <option key={type} value={type}>
                 {type}
@@ -93,7 +95,7 @@ export function FilterPanel({ filters, resultCount, savedCount, onChange, onRese
           </select>
         </Field>
 
-        <Field label="Price range" id="filter-price">
+        <Field label="محدودهٔ قیمت" id="filter-price">
           <select
             id="filter-price"
             className={selectClass}
@@ -113,7 +115,7 @@ export function FilterPanel({ filters, resultCount, savedCount, onChange, onRese
         </Field>
 
         <div className="grid grid-cols-2 gap-4">
-          <Field label="Bedrooms" id="filter-beds">
+          <Field label="اتاق خواب" id="filter-beds">
             <select
               id="filter-beds"
               className={selectClass}
@@ -131,7 +133,7 @@ export function FilterPanel({ filters, resultCount, savedCount, onChange, onRese
             </select>
           </Field>
 
-          <Field label="Bathrooms" id="filter-baths">
+          <Field label="سرویس بهداشتی" id="filter-baths">
             <select
               id="filter-baths"
               className={selectClass}
@@ -155,8 +157,10 @@ export function FilterPanel({ filters, resultCount, savedCount, onChange, onRese
           onClick={() => onChange({ savedOnly: !filters.savedOnly })}
           aria-pressed={filters.savedOnly}
           className={cn(
-            'flex items-center justify-between gap-4 rounded-xl border px-4 py-3.5 text-left transition-colors duration-300',
-            filters.savedOnly ? 'border-champagne bg-champagne-tint' : 'border-line hover:border-navy/25',
+            'flex items-center justify-between gap-4 rounded-xl border px-4 py-3.5 text-start transition-all duration-300 ease-premium hover:-translate-y-px',
+            filters.savedOnly
+              ? 'border-champagne bg-champagne-tint shadow-depth-sm'
+              : 'border-line bg-white shadow-inner-depth hover:border-navy/25 hover:shadow-depth-sm',
           )}
         >
           <span className="flex items-center gap-3">
@@ -166,18 +170,18 @@ export function FilterPanel({ filters, resultCount, savedCount, onChange, onRese
               fill={filters.savedOnly ? 'currentColor' : 'none'}
               aria-hidden="true"
             />
-            <span className="font-display text-[0.82rem] font-medium text-navy">My shortlist</span>
+            <span className="font-display text-[0.86rem] font-medium text-navy">فهرست کوتاه من</span>
           </span>
-          <span className="text-xs text-ink-muted">{savedCount}</span>
+          <span className="text-xs text-ink-muted">{faInt(savedCount)}</span>
         </button>
       </div>
 
-      <p className="mt-6 border-t border-line pt-5 text-xs uppercase tracking-[0.16em] text-ink-soft">
-        {resultCount} {resultCount === 1 ? 'residence' : 'residences'}
+      <p className="mt-6 border-t border-line pt-5 text-xs text-ink-soft">
+        {faInt(resultCount)} ملک
       </p>
 
       <Button variant="outline" size="sm" fullWidth className="mt-5 lg:hidden" onClick={onReset}>
-        Reset filters
+        بازنشانی فیلترها
       </Button>
     </div>
   )

@@ -75,9 +75,10 @@ export function Modal({ open, onClose, title, description, children, size = 'md'
   if (!open) return null
 
   return createPortal(
-    <div className="fixed inset-0 z-[70] overflow-y-auto">
+    // RTL layout: the dialog is centred by flex, so no side-specific assumptions here.
+    <div className="fixed inset-0 z-[70] overflow-y-auto" dir="rtl">
       <div
-        className="fixed inset-0 animate-fade-in bg-navy-900/65 backdrop-blur-[2px]"
+        className="fixed inset-0 animate-fade-in bg-navy-900/70 backdrop-blur-[3px]"
         onClick={onClose}
         aria-hidden="true"
       />
@@ -89,11 +90,11 @@ export function Modal({ open, onClose, title, description, children, size = 'md'
           aria-labelledby="modal-title"
           aria-describedby={description ? 'modal-description' : undefined}
           className={cn(
-            'relative z-10 w-full animate-sheet-in rounded-t-panel bg-white shadow-lift sm:rounded-panel',
+            'relative z-10 w-full animate-sheet-in rounded-t-panel bg-white shadow-depth-xl sm:rounded-panel',
             size === 'lg' ? 'sm:max-w-2xl' : 'sm:max-w-lg',
           )}
         >
-          <div className="flex items-start justify-between gap-6 border-b border-line px-6 py-5 sm:px-8 sm:py-6">
+          <div className="flex items-start justify-between gap-6 border-b border-line px-6 py-5 shadow-[inset_0_1px_0_rgba(255,255,255,0.8)] sm:px-8 sm:py-6">
             <div>
               <h2 id="modal-title" className="font-display text-lg font-semibold text-navy">
                 {title}
@@ -107,8 +108,8 @@ export function Modal({ open, onClose, title, description, children, size = 'md'
             <button
               type="button"
               onClick={onClose}
-              aria-label="Close dialog"
-              className="-mr-1 -mt-1 rounded-full p-2 text-ink-muted transition-colors hover:bg-mist hover:text-navy"
+              aria-label="بستن پنجره"
+              className="-me-1 -mt-1 rounded-full p-2 text-ink-muted transition-all duration-300 hover:-translate-y-px hover:bg-mist hover:text-navy hover:shadow-depth-sm"
             >
               <X className="h-4 w-4" strokeWidth={1.8} aria-hidden="true" />
             </button>

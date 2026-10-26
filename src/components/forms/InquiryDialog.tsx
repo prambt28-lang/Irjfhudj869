@@ -34,7 +34,7 @@ function todayISO(): string {
 function initialValues(target: InquiryTarget | null): FormValues {
   const property = target?.property
   const message = property
-    ? `I would like more information about ${property.name} (${locationLabel(property)}).`
+    ? `دربارهٔ ${property.name} (${locationLabel(property)}) اطلاعات بیشتری می‌خواهم.`
     : ''
 
   return { name: '', email: '', phone: '', message, preferredDate: '', preferredTime: 'morning' }
@@ -71,13 +71,13 @@ export function InquiryDialog({ open, target, onClose }: InquiryDialogProps) {
 
   const validate = (): boolean => {
     const next: Partial<Record<keyof FormValues, string>> = {}
-    if (!values.name.trim()) next.name = 'Please tell us your name.'
-    if (!values.email.trim()) next.email = 'An email address is required.'
-    else if (!emailPattern.test(values.email.trim())) next.email = 'Please check the email address.'
+    if (!values.name.trim()) next.name = 'لطفاً نام خود را وارد کنید.'
+    if (!values.email.trim()) next.email = 'نشانی ایمیل الزامی است.'
+    else if (!emailPattern.test(values.email.trim())) next.email = 'لطفاً نشانی ایمیل را بررسی کنید.'
     if (values.phone.trim() && values.phone.replace(/\D/g, '').length < 7) {
-      next.phone = 'Please check the phone number.'
+      next.phone = 'لطفاً شمارهٔ تلفن را بررسی کنید.'
     }
-    if (isViewing && !values.preferredDate) next.preferredDate = 'Choose a preferred date.'
+    if (isViewing && !values.preferredDate) next.preferredDate = 'تاریخ مورد نظر را انتخاب کنید.'
     setErrors(next)
     return Object.keys(next).length === 0
   }
@@ -104,7 +104,7 @@ export function InquiryDialog({ open, target, onClose }: InquiryDialogProps) {
       setStatus('sent')
     } catch {
       setStatus('idle')
-      setFormError('Something went wrong sending your enquiry. Please try again or call us directly.')
+      setFormError('ارسال درخواست شما با خطا روبه‌رو شد. لطفاً دوباره تلاش کنید یا مستقیم تلفنی تماس بگیرید.')
     }
   }
 
@@ -115,47 +115,60 @@ export function InquiryDialog({ open, target, onClose }: InquiryDialogProps) {
       open={open}
       onClose={onClose}
       size="lg"
-      title={isViewing ? 'Schedule a viewing' : 'Contact an agent'}
+      title={isViewing ? 'تعیین زمان بازدید' : 'تماس با مشاور'}
       description={
         property
           ? `${property.name} — ${locationLabel(property)}`
-          : 'Tell us what you are looking for and an advisor will reply within one business day.'
+          : 'بگویید دنبال چه چیزی هستید؛ مشاور ما ظرف یک روز کاری پاسخ می‌دهد.'
       }
     >
       {status === 'sent' ? (
         <div className="flex flex-col items-start gap-4">
-          <span className="flex h-12 w-12 items-center justify-center rounded-full bg-champagne-tint text-champagne-dark">
+          <span className="flex h-12 w-12 items-center justify-center rounded-full bg-champagne-tint text-champagne-dark shadow-depth-sm">
             <CheckCircle2 className="h-6 w-6" strokeWidth={1.7} aria-hidden="true" />
           </span>
           <div>
             <h3 className="font-display text-lg font-semibold text-navy">
-              Thank you{firstName ? `, ${firstName}` : ''}
+              سپاسگزاریم{firstName ? `، ${firstName}` : ''}
             </h3>
             <p className="mt-2 text-sm leading-relaxed text-ink-muted">
-              {isViewing
-                ? `Your viewing request has been logged with reference ${reference}. ${agent.name} will confirm a time with you shortly.`
-                : `Your enquiry has been logged with reference ${reference}. ${agent.name} will be in touch within one business day.`}
+              {isViewing ? (
+                <>
+                  درخواست بازدید شما با کد پیگیری <span className="ltr-inline font-medium">{reference}</span> ثبت
+                  شد. {agent.name} به‌زودی زمان آن را با شما نهایی می‌کند.
+                </>
+              ) : (
+                <>
+                  درخواست شما با کد پیگیری <span className="ltr-inline font-medium">{reference}</span> ثبت شد.{' '}
+                  {agent.name} ظرف یک روز کاری با شما تماس می‌گیرد.
+                </>
+              )}
             </p>
           </div>
           <div className="flex flex-wrap items-center gap-3 pt-1">
-            <Button variant="primary" size="sm" href={contact.phoneHref} iconLeft={<Phone className="h-4 w-4" strokeWidth={1.8} />}>
-              {contact.phoneDisplay}
+            <Button
+              variant="primary"
+              size="sm"
+              href={contact.phoneHref}
+              iconLeft={<Phone className="h-4 w-4" strokeWidth={1.8} />}
+            >
+              <span className="ltr-inline">{contact.phoneDisplay}</span>
             </Button>
             <Button variant="outline" size="sm" onClick={onClose}>
-              Close
+              بستن
             </Button>
           </div>
         </div>
       ) : (
         <form onSubmit={onSubmit} noValidate className="flex flex-col gap-5">
-          <div className="flex items-center gap-4 rounded-card border border-line bg-ivory px-4 py-3.5">
+          <div className="flex items-center gap-4 rounded-card border border-line bg-ivory px-4 py-3.5 shadow-inner-depth">
             <img
               src={agent.photo}
               alt=""
               width={48}
               height={48}
               loading="lazy"
-              className="h-12 w-12 rounded-full object-cover"
+              className="h-12 w-12 rounded-full object-cover shadow-depth-sm"
             />
             <div className="min-w-0">
               <p className="truncate font-display text-sm font-semibold text-navy">{agent.name}</p>
@@ -163,14 +176,14 @@ export function InquiryDialog({ open, target, onClose }: InquiryDialogProps) {
             </div>
             <a
               href={`tel:${agent.phone.replace(/\D/g, '')}`}
-              className="ml-auto hidden shrink-0 text-xs font-medium text-navy underline-offset-4 hover:text-champagne-dark hover:underline sm:block"
+              className="ms-auto hidden shrink-0 text-xs font-medium text-navy underline-offset-4 hover:text-champagne-dark hover:underline sm:block"
             >
-              {agent.phone}
+              <span className="ltr-inline">{agent.phone}</span>
             </a>
           </div>
 
           <div className="grid gap-5 sm:grid-cols-2">
-            <Field label="Full name" id="inquiry-name" error={errors.name}>
+            <Field label="نام و نام خانوادگی" id="inquiry-name" error={errors.name}>
               <input
                 id="inquiry-name"
                 name="name"
@@ -183,11 +196,12 @@ export function InquiryDialog({ open, target, onClose }: InquiryDialogProps) {
                 aria-describedby={errors.name ? 'inquiry-name-error' : undefined}
               />
             </Field>
-            <Field label="Email" id="inquiry-email" error={errors.email}>
+            <Field label="ایمیل" id="inquiry-email" error={errors.email}>
               <input
                 id="inquiry-email"
                 name="email"
                 type="email"
+                dir="ltr"
                 autoComplete="email"
                 className={controlClass}
                 value={values.email}
@@ -198,11 +212,12 @@ export function InquiryDialog({ open, target, onClose }: InquiryDialogProps) {
             </Field>
           </div>
 
-          <Field label="Phone (optional)" id="inquiry-phone" error={errors.phone}>
+          <Field label="تلفن (اختیاری)" id="inquiry-phone" error={errors.phone}>
             <input
               id="inquiry-phone"
               name="phone"
               type="tel"
+              dir="ltr"
               autoComplete="tel"
               className={controlClass}
               value={values.phone}
@@ -214,7 +229,7 @@ export function InquiryDialog({ open, target, onClose }: InquiryDialogProps) {
 
           {isViewing && (
             <div className="grid gap-5 sm:grid-cols-2">
-              <Field label="Preferred date" id="inquiry-date" error={errors.preferredDate}>
+              <Field label="تاریخ مورد نظر" id="inquiry-date" error={errors.preferredDate}>
                 <input
                   id="inquiry-date"
                   name="preferredDate"
@@ -227,7 +242,7 @@ export function InquiryDialog({ open, target, onClose }: InquiryDialogProps) {
                   aria-describedby={errors.preferredDate ? 'inquiry-date-error' : undefined}
                 />
               </Field>
-              <Field label="Preferred time" id="inquiry-time">
+              <Field label="ساعت مورد نظر" id="inquiry-time">
                 <select
                   id="inquiry-time"
                   name="preferredTime"
@@ -235,15 +250,15 @@ export function InquiryDialog({ open, target, onClose }: InquiryDialogProps) {
                   value={values.preferredTime}
                   onChange={(event) => update('preferredTime', event.target.value)}
                 >
-                  <option value="morning">Morning (9am – 12pm)</option>
-                  <option value="afternoon">Afternoon (12pm – 4pm)</option>
-                  <option value="evening">Evening (4pm – 6pm)</option>
+                  <option value="morning">صبح (۹ تا ۱۲)</option>
+                  <option value="afternoon">بعدازظهر (۱۲ تا ۱۶)</option>
+                  <option value="evening">عصر (۱۶ تا ۱۸)</option>
                 </select>
               </Field>
             </div>
           )}
 
-          <Field label="Message" id="inquiry-message" hint="Optional — anything that helps us prepare.">
+          <Field label="پیام" id="inquiry-message" hint="اختیاری — هر چیزی که به آماده‌شدن ما کمک کند.">
             <textarea
               id="inquiry-message"
               name="message"
@@ -255,14 +270,14 @@ export function InquiryDialog({ open, target, onClose }: InquiryDialogProps) {
           </Field>
 
           {formError && (
-            <p role="alert" className="rounded-xl bg-red-50 px-4 py-3 text-sm text-red-700">
+            <p role="alert" className="rounded-xl bg-red-50 px-4 py-3 text-sm text-red-700 shadow-depth-sm">
               {formError}
             </p>
           )}
 
           <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
             <p className="text-xs leading-relaxed text-ink-soft">
-              We use your details only to answer this enquiry.
+              از اطلاعات شما فقط برای پاسخ به همین درخواست استفاده می‌کنیم.
             </p>
             <Button
               type="submit"
@@ -270,9 +285,9 @@ export function InquiryDialog({ open, target, onClose }: InquiryDialogProps) {
               fullWidth
               className="sm:w-auto"
               disabled={status === 'submitting'}
-              iconRight={<Send className="h-4 w-4" strokeWidth={1.8} aria-hidden="true" />}
+              iconRight={<Send className="h-4 w-4 rtl:rotate-180" strokeWidth={1.8} aria-hidden="true" />}
             >
-              {status === 'submitting' ? 'Sending…' : isViewing ? 'Request viewing' : 'Send enquiry'}
+              {status === 'submitting' ? 'در حال ارسال…' : isViewing ? 'درخواست بازدید' : 'ارسال درخواست'}
             </Button>
           </div>
         </form>

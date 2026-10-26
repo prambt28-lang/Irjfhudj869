@@ -6,6 +6,7 @@ import HomePage from './pages/HomePage'
 import NotFoundPage from './pages/NotFoundPage'
 import PropertiesPage from './pages/PropertiesPage'
 import PropertyDetailPage from './pages/PropertyDetailPage'
+import SearchPage from './pages/SearchPage'
 
 /**
  * Keeps the viewport honest across navigation: jumps to the top on a route
@@ -38,6 +39,8 @@ export default function App() {
           <Route path="/" element={<HomePage />} />
           <Route path="/properties" element={<PropertiesPage />} />
           <Route path="/properties/:propertyId" element={<PropertyDetailPage />} />
+          {/* The search block moved off the home hero onto its own page. */}
+          <Route path="/search" element={<SearchPage />} />
           <Route path="*" element={<NotFoundPage />} />
         </Route>
       </Routes>

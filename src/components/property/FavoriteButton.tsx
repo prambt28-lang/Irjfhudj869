@@ -26,14 +26,14 @@ export function FavoriteButton({ property, className, size = 'md', tone = 'dark'
       }}
       aria-pressed={active}
       aria-label={
-        active ? `Remove ${property.name} from your shortlist` : `Save ${property.name} to your shortlist`
+        active ? `حذف ${property.name} از فهرست کوتاه` : `افزودن ${property.name} به فهرست کوتاه`
       }
-      title={active ? 'Saved to shortlist' : 'Save to shortlist'}
+      title={active ? 'در فهرست کوتاه ذخیره شده' : 'افزودن به فهرست کوتاه'}
       className={cn(
-        'z-10 flex items-center justify-center rounded-full border backdrop-blur-[3px] transition-all duration-300 ease-premium',
+        'z-10 flex items-center justify-center rounded-full border shadow-[0_12px_26px_-18px_rgba(0,0,0,0.85)] backdrop-blur-[3px] transition-all duration-300 ease-premium hover:-translate-y-px active:translate-y-0',
         size === 'sm' ? 'h-9 w-9' : 'h-11 w-11',
         active
-          ? 'border-champagne bg-champagne text-navy'
+          ? 'border-champagne bg-champagne text-navy shadow-[0_14px_28px_-16px_rgba(197,160,112,0.9)]'
           : tone === 'dark'
             ? 'border-white/40 bg-navy-900/25 text-white hover:border-white hover:bg-navy-900/50'
             : 'border-line bg-white/90 text-ink-muted hover:border-navy/30 hover:text-navy',

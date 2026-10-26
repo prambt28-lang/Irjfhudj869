@@ -25,15 +25,21 @@ interface LogoProps {
   className?: string
 }
 
-/** Wordmark used in the header (light, over the hero) and the footer. */
+/**
+ * Wordmark used in the header (light, over the hero) and the footer.
+ *
+ * The lockup is the brand's visual identity and stays in Latin: it keeps its own
+ * Montserrat face (`font-brand`) and its wide letter-spacing, both of which the
+ * Persian UI text deliberately drops. Only its position follows the RTL layout.
+ */
 export function Logo({ tone = 'light', className }: LogoProps) {
   return (
     <span className={cn('inline-flex items-center gap-3', className)}>
-      <LogoMark className="h-8 w-8 shrink-0 text-champagne sm:h-9 sm:w-9" />
-      <span className="flex flex-col leading-none">
+      <LogoMark className="h-8 w-8 shrink-0 text-champagne drop-shadow-[0_4px_10px_rgba(197,160,112,0.35)] sm:h-9 sm:w-9" />
+      <span className="flex flex-col leading-none" dir="ltr">
         <span
           className={cn(
-            'font-display text-[0.9rem] font-bold uppercase tracking-[0.2em] sm:text-[0.98rem]',
+            'font-brand text-[0.9rem] font-bold uppercase tracking-[0.2em] sm:text-[0.98rem]',
             tone === 'light' ? 'text-white' : 'text-navy',
           )}
         >
@@ -41,7 +47,7 @@ export function Logo({ tone = 'light', className }: LogoProps) {
         </span>
         <span
           className={cn(
-            'mt-[5px] font-display text-[0.5rem] font-semibold uppercase tracking-[0.36em]',
+            'mt-[5px] font-brand text-[0.5rem] font-semibold uppercase tracking-[0.36em]',
             tone === 'light' ? 'text-white/70' : 'text-ink-soft',
           )}
         >

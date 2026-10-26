@@ -1,9 +1,10 @@
 export const brand = {
+  // The wordmark itself is the brand identity, so it stays as it is.
   name: 'Horizon Properties',
   short: 'Horizon',
-  tagline: 'Premium properties in prime locations.',
+  tagline: 'املاک ممتاز در بهترین موقعیت‌ها',
   description:
-    'Horizon Properties represents exceptional homes and considered investments across the United States, working with a small number of clients at a time.',
+    'هورایزن پراپرتیز نمایندهٔ خانه‌های استثنایی و سرمایه‌گذاری‌های سنجیده در سراسر ایالات متحده است؛ با تعداد محدودی مشتری در هر سال کار می‌کند.',
 }
 
 export interface NavLink {
@@ -14,20 +15,21 @@ export interface NavLink {
 }
 
 export const navLinks: NavLink[] = [
-  { label: 'Home', to: '/' },
-  { label: 'Properties', to: '/properties' },
-  { label: 'About Us', to: '/#about', section: 'about' },
-  { label: 'Services', to: '/#services', section: 'services' },
-  { label: 'Team', to: '/#team', section: 'team' },
-  { label: 'Contact', to: '/#contact', section: 'contact' },
+  { label: 'خانه', to: '/' },
+  { label: 'املاک', to: '/properties' },
+  { label: 'جست‌وجوی املاک', to: '/search' },
+  { label: 'درباره ما', to: '/#about', section: 'about' },
+  { label: 'خدمات', to: '/#services', section: 'services' },
+  { label: 'تیم', to: '/#team', section: 'team' },
+  { label: 'تماس', to: '/#contact', section: 'contact' },
 ]
 
 export const contact = {
   phoneDisplay: '(555) 246-7890',
   phoneHref: 'tel:+15552467890',
   email: 'hello@horizonproperties.com',
-  addressLines: ['Horizon Properties', '2400 Congress Avenue, Suite 12', 'Austin, Texas 78701'],
-  hours: 'Monday – Saturday, 9am – 6pm CT',
+  addressLines: ['هورایزن پراپرتیز', 'خیابان کانگرس، شمارهٔ ۲۴۰۰، واحد ۱۲', 'آستین، تگزاس ۷۸۷۰۱'],
+  hours: 'دوشنبه تا شنبه، ۹ صبح تا ۶ عصر (وقت مرکزی)',
 }
 
 /** Swap these three URLs for the real profiles before launch. */
@@ -45,92 +47,92 @@ export interface Service {
 
 export const services: Service[] = [
   {
-    title: 'Luxury Home Sales',
+    title: 'فروش خانه‌های لوکس',
     description:
-      'Representation for architecturally significant homes — from a discreet off-market introduction through to completion.',
-    meta: 'Buyer & seller representation',
+      'نمایندگی خانه‌های شاخص از نظر معماری؛ از یک معرفی محرمانه و خارج از فهرست تا رسیدن به مرحلهٔ انتقال سند.',
+    meta: 'نمایندگی خریدار و فروشنده',
   },
   {
-    title: 'Property Investment',
+    title: 'سرمایه‌گذاری ملکی',
     description:
-      'Portfolio strategy, yield analysis and acquisition sourcing for income-producing residential assets.',
-    meta: 'Acquisition & portfolio strategy',
+      'راهبرد پرتفوی، تحلیل بازده و شناسایی فرصت‌های خرید برای دارایی‌های مسکونی درآمدزا.',
+    meta: 'خرید و راهبرد پرتفوی',
   },
   {
-    title: 'Property Marketing',
+    title: 'بازاریابی ملک',
     description:
-      'Film, photography and editorial production that positions a home in front of the right buyers, not the largest number.',
-    meta: 'Photography, film & press',
+      'تولید فیلم، عکاسی و محتوای تحریریه‌ای که خانه را در برابر خریداران درست قرار می‌دهد، نه بزرگ‌ترین تعداد.',
+    meta: 'عکاسی، فیلم و رسانه',
   },
   {
-    title: 'Real Estate Advisory',
+    title: 'مشاورهٔ املاک',
     description:
-      'Independent advice on timing, structure and negotiation before you commit capital to a property.',
-    meta: 'Pre-acquisition advice',
+      'مشاورهٔ مستقل دربارهٔ زمان‌بندی، ساختار معامله و مذاکره، پیش از آنکه سرمایه‌تان را به ملکی گره بزنید.',
+    meta: 'مشاورهٔ پیش از خرید',
   },
   {
-    title: 'Property Valuation',
+    title: 'ارزیابی ملک',
     description:
-      'Evidence-based appraisals grounded in comparable sales, land value, and the quality of the build.',
-    meta: 'Appraisals & market evidence',
+      'کارشناسی مبتنی بر شواهد؛ بر پایهٔ معاملات مشابه، ارزش زمین و کیفیت ساخت.',
+    meta: 'کارشناسی و شواهد بازار',
   },
   {
-    title: 'Relocation Services',
+    title: 'خدمات جابه‌جایی',
     description:
-      'Neighbourhood orientation, school introductions and settlement support for clients moving internationally.',
-    meta: 'Relocation & settling in',
+      'معرفی محله، آشنایی با مدرسه‌ها و پشتیبانی اقامت برای مشتریانی که از خارج کشور نقل مکان می‌کنند.',
+    meta: 'جابه‌جایی و استقرار',
   },
 ]
 
 export const whyUs = {
-  label: 'Why Horizon',
-  title: 'A quieter way to buy and sell property',
-  body: 'We take on a limited number of clients each year. That means the person you meet is the person who negotiates on your behalf, and every property we present has been visited, measured and priced by us first.',
+  label: 'چرا هورایزن',
+  title: 'راهی آرام‌تر برای خرید و فروش ملک',
+  body: 'هر سال تعداد محدودی مشتری را می‌پذیریم. یعنی همان کسی که ملاقات می‌کنید، مذاکره را هم به نام شما انجام می‌دهد و هر ملکی که معرفی می‌کنیم، پیش‌تر خودمان دیده، اندازه گرفته و قیمت‌گذاری کرده‌ایم.',
   reasons: [
     {
-      title: 'Architectural literacy',
+      title: 'تسلط بر معماری',
       description:
-        'We read plans and materials, so we can speak about what a building actually is — not only what it measures.',
+        'نقشه و متریال را می‌خوانیم، پس می‌توانیم دربارهٔ اینکه یک ساختمان واقعاً چیست صحبت کنیم — نه فقط اندازه‌اش.',
     },
     {
-      title: 'Discretion as standard',
+      title: 'محرمانگی، اصل کار ماست',
       description:
-        'A significant share of what we transact never appears on a public listing. Privacy is part of the service.',
+        'بخش قابل‌توجهی از معاملات ما هرگز در فهرست عمومی منتشر نمی‌شود. محرمانگی بخشی از خدمت است.',
     },
     {
-      title: 'One advisor, end to end',
+      title: 'یک مشاور، تا پایان کار',
       description:
-        'The advisor who shows you the property negotiates it and stays with you through completion.',
+        'همان مشاوری که ملک را به شما نشان می‌دهد، مذاکره را انجام می‌دهد و تا انتقال سند در کنار شما می‌ماند.',
     },
   ],
   stats: [
-    { value: '18', label: 'Years in prime markets' },
-    { value: '1,240+', label: 'Residences represented' },
-    { value: '$1.4B', label: 'Transaction volume' },
-    { value: '98%', label: 'Clients who would refer us' },
+    { value: '۱۸', label: 'سال حضور در بازارهای ممتاز' },
+    { value: '۱٬۲۴۰+', label: 'خانهٔ معرفی‌شده' },
+    { value: '۱٫۴ میلیارد دلار', label: 'ارزش معاملات' },
+    { value: '۹۸٪', label: 'مشتریانی که ما را معرفی می‌کنند' },
   ],
 }
 
 export const heroCopy = {
-  headline: ['Discover Exceptional', 'Homes & Investments'],
+  headline: ['خانه‌های استثنایی', 'و سرمایه‌گذاری هوشمند'],
   standfirst:
-    'Premium properties in prime locations. Find your dream home or the perfect investment with confidence.',
+    'املاک ممتاز در بهترین موقعیت‌ها. با اطمینان خانهٔ رویایی یا سرمایه‌گذاری مناسب خود را پیدا کنید.',
 }
 
 export const aboutCopy = {
-  label: 'About Us',
-  title: 'Who We Are',
-  body: 'At Horizon Properties, we connect people with extraordinary homes and smart investments. Integrity, transparency, and client satisfaction are at the heart of everything we do.',
+  label: 'دربارهٔ ما',
+  title: 'ما چه کسانی هستیم',
+  body: 'در هورایزن پراپرتیز، مردم را به خانه‌های فوق‌العاده و سرمایه‌گذاری‌های هوشمند وصل می‌کنیم. درستی، شفافیت و رضایت مشتری، قلب همهٔ کار ما است.',
   secondary:
-    'Founded in Austin and working across the United States, we advise buyers, sellers and investors on residential property — from first viewings to final signatures.',
+    'با پایه‌گذاری در آستین و فعالیت در سراسر ایالات متحده، به خریداران، فروشندگان و سرمایه‌گذاران در حوزهٔ ملک مسکونی مشاوره می‌دهیم؛ از نخستین بازدید تا امضای نهایی.',
   stats: [
-    { value: '18', label: 'Years advising clients' },
-    { value: '6', label: 'Agents, no more' },
+    { value: '۱۸', label: 'سال مشاوره به مشتریان' },
+    { value: '۶', label: 'مشاور، نه بیشتر' },
   ],
 }
 
 export const ctaCopy = {
-  title: 'Ready to Find Your Perfect Property?',
-  body: 'Let our experts guide you to the right home or investment.',
-  action: 'Get in Touch',
+  title: 'آماده‌اید ملک ایده‌آل خود را پیدا کنید؟',
+  body: 'بگذارید کارشناسان ما شما را به خانه یا سرمایه‌گذاری درست برسانند.',
+  action: 'تماس بگیرید',
 }

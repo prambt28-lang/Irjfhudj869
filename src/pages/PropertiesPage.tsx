@@ -18,10 +18,11 @@ import {
 } from '../data/properties'
 import { activeFilterCount, filtersFromParams, filtersToParams } from '../lib/propertyFilters'
 import { useDocumentTitle } from '../hooks/useDocumentTitle'
+import { faInt } from '../lib/format'
 import { cn } from '../lib/cn'
 
 export default function PropertiesPage() {
-  useDocumentTitle('Properties')
+  useDocumentTitle('املاک')
 
   const [searchParams, setSearchParams] = useSearchParams()
   const { favorites } = useFavorites()
@@ -39,16 +40,26 @@ export default function PropertiesPage() {
 
   return (
     <>
-      <section className="bg-navy-900 pt-[76px] text-white">
-        <div className="shell pb-14 pt-16 sm:pb-16 sm:pt-20">
-          <SectionLabel tone="light">Portfolio</SectionLabel>
-          <h1 className="mt-5 max-w-3xl font-display text-display-lg font-bold text-white">
-            Residences currently represented
-          </h1>
-          <p className="mt-5 max-w-2xl text-[0.98rem] leading-relaxed text-white/70">
-            {properties.length} properties across the United States — from lakeside villas to ocean-facing
-            residences. Filter the collection, or save the ones you would like to discuss.
-          </p>
+      <section className="relative bg-navy-900 pt-[76px] text-white shadow-[inset_0_-1px_0_rgba(0,0,0,0.35)]">
+        <div
+          className="pointer-events-none absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-black/30 to-transparent"
+          aria-hidden="true"
+        />
+        <div className="shell relative flex flex-wrap items-end justify-between gap-8 pb-14 pt-16 sm:pb-16 sm:pt-20">
+          <div>
+            <SectionLabel tone="light">مجموعهٔ املاک</SectionLabel>
+            <h1 className="mt-5 max-w-3xl font-display text-display-lg font-bold text-white">
+              خانه‌هایی که اکنون نمایندگی می‌کنیم
+            </h1>
+            <p className="mt-5 max-w-2xl text-[0.98rem] leading-relaxed text-white/70">
+              {faInt(properties.length)} ملک در سراسر ایالات متحده — از ویلاهای کنار دریاچه تا اقامتگاه‌های روبه‌دریا.
+              مجموعه را پالایش کنید، یا هر ملکی را که می‌خواهید درباره‌اش گفت‌وگو کنیم ذخیره کنید.
+            </p>
+          </div>
+
+          <Button to="/search" variant="light" size="lg" className="shrink-0">
+            جست‌وجوی پیشرفتهٔ املاک
+          </Button>
         </div>
       </section>
 
@@ -69,7 +80,11 @@ export default function PropertiesPage() {
                 )
               }
             >
-              {panelOpen ? 'Hide filters' : activeCount > 0 ? `Filters (${activeCount})` : 'Filters'}
+              {panelOpen
+                ? 'بستن فیلترها'
+                : activeCount > 0
+                  ? `فیلترها (${faInt(activeCount)})`
+                  : 'فیلترها'}
             </Button>
             {panelOpen && (
               <div className="mt-4">
@@ -97,18 +112,17 @@ export default function PropertiesPage() {
           <div>
             <div className="flex flex-wrap items-center justify-between gap-4 border-b border-line pb-5">
               <p role="status" className="text-sm text-ink-muted">
-                <span className="font-display font-semibold text-navy">{results.length}</span>{' '}
-                {results.length === 1 ? 'property' : 'properties'}
-                {filters.query.trim() ? ` matching “${filters.query.trim()}”` : ''}
+                <span className="font-display font-semibold text-navy">{faInt(results.length)}</span> ملک
+                {filters.query.trim() ? ` مطابق «${filters.query.trim()}»` : ''}
               </p>
 
               <div className="flex items-center gap-3">
-                <label htmlFor="sort" className="text-xs uppercase tracking-[0.16em] text-ink-soft">
-                  Sort
+                <label htmlFor="sort" className="text-xs text-ink-soft">
+                  ترتیب
                 </label>
                 <select
                   id="sort"
-                  className={cn(selectClass, 'h-11 w-auto min-w-[11rem] py-0')}
+                  className={cn(selectClass, 'h-11 w-auto min-w-[12rem] py-0')}
                   value={filters.sort}
                   onChange={(event) => update({ sort: event.target.value as SortKey })}
                 >
@@ -130,18 +144,18 @@ export default function PropertiesPage() {
                 ))}
               </ul>
             ) : (
-              <div className="mt-10 rounded-panel border border-line bg-white px-8 py-16 text-center shadow-soft">
-                <h2 className="font-display text-display-sm font-semibold">No properties match these filters</h2>
+              <div className="mt-10 rounded-panel border border-line bg-white px-8 py-16 text-center shadow-depth-lg">
+                <h2 className="font-display text-display-sm font-semibold">هیچ ملکی با این فیلترها پیدا نشد</h2>
                 <p className="mx-auto mt-4 max-w-md text-sm leading-relaxed text-ink-muted">
-                  Widen the price range or clear a filter to see the rest of the collection. We also hold
-                  off-market listings that never appear here — ask us directly.
+                  محدودهٔ قیمت را بازتر کنید یا یکی از فیلترها را بردارید تا بقیهٔ مجموعه را ببینید. املاکی هم
+                  داریم که هرگز در فهرست عمومی منتشر نمی‌شوند — مستقیم بپرسید.
                 </p>
                 <div className="mt-7 flex flex-wrap justify-center gap-3">
                   <Button variant="primary" size="md" onClick={reset}>
-                    Clear all filters
+                    پاک کردن همهٔ فیلترها
                   </Button>
                   <Button to="/" variant="outline" size="md">
-                    Back to home
+                    بازگشت به خانه
                   </Button>
                 </div>
               </div>
